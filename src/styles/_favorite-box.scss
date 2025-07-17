@@ -1,0 +1,41 @@
+.favorite-box {
+  border-radius: 20px;
+  background-color: white;
+  max-width: 1216px;
+  margin: 30px auto;
+
+  .favorite-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    padding: 24px;
+
+    p {
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
+
+  .favorites {
+    padding: 24px;
+    .favorite-city {
+      padding: 16px;
+      background-color: white;
+      width: 120px;
+      border-radius: 10px;
+      border: solid 1px;
+      border-color: #def4ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: 0.3s;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 0 8px 32px -8px hsl(320 60% 70% / 0.4);
+      }
+    }
+  }
+}

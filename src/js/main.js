@@ -7,6 +7,9 @@ const WEATHER_VALUE = document.getElementById("weather-value");
 const WEATHER_STATUS = document.getElementById("weather-status");
 const WIND_SPEED = document.getElementById("wind-speed");
 const HUMIDITY = document.getElementById("humidity");
+const FAVORITE_BUTTON = document.getElementById("favorite-button");
+
+const EMOJIES = []
 
 const getWetherData = async (place) => {
   const res = await fetch(
@@ -41,7 +44,9 @@ SEARCH_BUTTON.addEventListener("click", async () => {
 });
 
 const renderContent = (weatherData) => {
-  PLACE.textContent = weatherData.name;
+  const place = weatherData.name;
+  PLACE.textContent = place;
+  localStorage.setItem("current-place", place);
   const temp = weatherData.main.temp - 273.15;
 
   WEATHER_VALUE.textContent = temp.toFixed(0) + "°C";
@@ -50,4 +55,27 @@ const renderContent = (weatherData) => {
 
   WIND_SPEED.textContent = weatherData.wind.speed;
   HUMIDITY.textContent = weatherData.main.humidity;
+};
+
+FAVORITE_BUTTON.addEventListener("click", () => {
+  const currentPlace = localStorage.getItem("current-place");
+  const favoriteCitiesString = localStorage.getItem("favorite-places");
+  const favoriteCities = JSON.parse(favoriteCitiesString) ?? [];
+  const isFavorite = favoriteCities?.includes(currentPlace);
+
+  let newFavorites = [];
+
+  if (isFavorite) {
+    newFavorites = favoriteCities.filter((city) => city !== currentPlace);
+  } else {
+    newFavorites = [...favoriteCities, currentPlace];
+  }
+  localStorage.setItem("favorite-places", JSON.stringify(newFavorites));
+  renderFavorites(newFavorites);
+});
+
+const renderFavorites = (favorites) => {
+  // 1. ზემოთ შექმენი ცვლადი რომელიც წამოიღებს ფავორიტი ადგილების დივს (id="favorites")
+  // 2. წამოღებულ ფავორიტ ადგილებზე დაატრიალე ციკლი და შექმენი ფავორიტი ადგილის ელემენტი (class="favorite-city")
+  // 3. შექმენი ემოჯიების მასივი და რენდომულად დაამატე ციკლის ყოველ იტერაციაზე
 };

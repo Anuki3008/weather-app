@@ -10,6 +10,7 @@ const HUMIDITY = document.getElementById("humidity");
 const FAVORITE_BUTTON = document.getElementById("favorite-button");
 const FAVORITES_CONTAINER = document.getElementById("favorites");
 const FAVORITE_STAR = document.getElementById("favorite-star");
+const WEEKLY_CONTAINER = document.getElementById("weekly-weather");
 
 const EMOJIES = ["🍕", "⛩️", "🗼", "🌮", "⚽", "🛕", "🐫", "🥨", "🐉", "🍇"];
 
@@ -23,9 +24,8 @@ if (isFavoritePlace) {
 }
 
 const getWetherData = async (place) => {
-  const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=9b1eafa8504d3df1a475ec2a4e57743f`
-  );
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=9b1eafa8504d3df1a475ec2a4e57743f`;
+  const res = await fetch(apiUrl);
 
   const weatherData = await res.json();
   renderContent(weatherData);
@@ -108,3 +108,33 @@ const renderFavorites = () => {
 };
 
 renderFavorites();
+
+const renderWeeklyWeather = async () => {
+  const weeklyWeather = await getWeeklyWeatherData(CURRENT_PLACE);
+
+  console.log({ weeklyWeather });
+
+  WEEKLY_CONTAINER.innerHTML = "";
+  weeklyWeather.forEach((item) => {
+    const weeklyCard = document.createElement("div");
+    weeklyCard.className = "weekly-card";
+
+    const currentTemp = item.main.temp - 273.15;
+    const date = new Date(item.dt_txt);
+
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      day: "2-digit",
+    });
+
+    weeklyCard.innerHTML = `<h4>${formatter.format(date)}</h4>
+        <p class="emojy">☁️</p>
+        <div class="celsius">
+          <p class="left">${currentTemp.toFixed(0)}°C</p>
+        </div>
+        <p>${item.weather[0].main}</p>`;
+
+    WEEKLY_CONTAINER.appendChild(weeklyCard);
+  });
+};
+renderWeeklyWeather();

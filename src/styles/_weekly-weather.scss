@@ -1,11 +1,14 @@
 .weekly-weather {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-top: 30px !important;
   margin: 0 auto;
   max-width: 1200px;
+  flex-wrap: wrap;
+  gap: 12px;
 
-  .today-card {
+  .weekly-card {
     background-color: white;
     padding: 12px;
     border-radius: 12px;

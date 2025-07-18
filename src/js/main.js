@@ -11,7 +11,7 @@ const FAVORITE_BUTTON = document.getElementById("favorite-button");
 const FAVORITES_CONTAINER = document.getElementById("favorites");
 const FAVORITE_STAR = document.getElementById("favorite-star");
 
-const EMOJIES = [];
+const EMOJIES = ["🍕", "⛩️", "🗼", "🌮", "⚽", "🛕", "🐫", "🥨", "🐉", "🍇"];
 
 const FAVORITE_PLACES =
   JSON.parse(localStorage.getItem("favorite-places")) ?? [];
@@ -93,12 +93,13 @@ const renderFavorites = () => {
   // 2. წამოღებულ ფავორიტ ადგილებზე დაატრიალე ციკლი და შექმენი ფავორიტი ადგილის ელემენტი (class="favorite-city")
   FAVORITES_CONTAINER.innerHTML = "";
   favorites.forEach((favoritePlace) => {
+    const randomEmoji = EMOJIES[Math.floor(Math.random() * EMOJIES.length)];
     const favoriteContainer = document.createElement("div");
     favoriteContainer.className = "favorite-city";
     favoriteContainer.addEventListener("click", () => {
       getWetherData(favoritePlace);
     });
-    favoriteContainer.innerHTML = `<p>🗼</p>
+    favoriteContainer.innerHTML = `<p>${randomEmoji}</p>
           <p>${favoritePlace}</p>
           <img src="../assets/icons/location.png" alt="" />`;
     FAVORITES_CONTAINER.appendChild(favoriteContainer);

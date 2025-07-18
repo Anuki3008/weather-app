@@ -1,7 +1,7 @@
 .favorite-box {
   border-radius: 20px;
   background-color: white;
-  max-width: 1216px;
+  max-width: 1200px;
   margin: 30px auto;
 
   .favorite-header {
@@ -26,6 +26,7 @@
     padding: 24px;
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
     gap: 10px;
     .favorite-city {
       padding: 16px;

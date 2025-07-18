@@ -139,8 +139,10 @@
         font-family: "Fredoka", sans-serif;
         font-weight: 500;
         font-size: 14px;
-        img {
-          width: 16px;
+
+        .star {
+          font-size: 22px;
+          margin-bottom: 4px;
         }
         height: 40px;
         transition: 0.3s;

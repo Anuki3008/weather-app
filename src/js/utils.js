@@ -5,21 +5,6 @@ async function getCityFromCoordinates(latitude, longitude) {
   const res = await fetch(apiUrl);
 
   const data = await res.json();
-  console.log(data.address.city);
 
   return data.address.city;
-
-  // .then((response) => response.json())
-  // .then((data) => {
-  //   if (data.address && data.address.city) {
-  //     console.log("Current city:", data.address.city);
-
-  //     return data.address.city;
-  //   } else {
-  //     console.log("Could not determine city from coordinates.");
-  //   }
-  // })
-  // .catch((error) => {
-  //   console.error("Error during reverse geocoding:", error);
-  // });
 }

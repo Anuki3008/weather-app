@@ -8,8 +8,19 @@ const WEATHER_STATUS = document.getElementById("weather-status");
 const WIND_SPEED = document.getElementById("wind-speed");
 const HUMIDITY = document.getElementById("humidity");
 const FAVORITE_BUTTON = document.getElementById("favorite-button");
+const FAVORITES_CONTAINER = document.getElementById("favorites");
+const FAVORITE_STAR = document.getElementById("favorite-star");
 
-const EMOJIES = []
+const EMOJIES = [];
+
+const FAVORITE_PLACES =
+  JSON.parse(localStorage.getItem("favorite-places")) ?? [];
+const CURRENT_PLACE = localStorage.getItem("current-place");
+
+const isFavoritePlace = FAVORITE_PLACES.includes(CURRENT_PLACE);
+if (isFavoritePlace) {
+  FAVORITE_STAR.innerHTML = "★";
+}
 
 const getWetherData = async (place) => {
   const res = await fetch(
@@ -67,15 +78,32 @@ FAVORITE_BUTTON.addEventListener("click", () => {
 
   if (isFavorite) {
     newFavorites = favoriteCities.filter((city) => city !== currentPlace);
+    FAVORITE_STAR.innerHTML = "☆";
   } else {
     newFavorites = [...favoriteCities, currentPlace];
+    FAVORITE_STAR.innerHTML = "★";
   }
   localStorage.setItem("favorite-places", JSON.stringify(newFavorites));
   renderFavorites(newFavorites);
 });
 
-const renderFavorites = (favorites) => {
+const renderFavorites = () => {
+  const favorites = JSON.parse(localStorage.getItem("favorite-places")) ?? [];
   // 1. ზემოთ შექმენი ცვლადი რომელიც წამოიღებს ფავორიტი ადგილების დივს (id="favorites")
   // 2. წამოღებულ ფავორიტ ადგილებზე დაატრიალე ციკლი და შექმენი ფავორიტი ადგილის ელემენტი (class="favorite-city")
+  FAVORITES_CONTAINER.innerHTML = "";
+  favorites.forEach((favoritePlace) => {
+    const favoriteContainer = document.createElement("div");
+    favoriteContainer.className = "favorite-city";
+    favoriteContainer.addEventListener("click", () => {
+      getWetherData(favoritePlace);
+    });
+    favoriteContainer.innerHTML = `<p>🗼</p>
+          <p>${favoritePlace}</p>
+          <img src="../assets/icons/location.png" alt="" />`;
+    FAVORITES_CONTAINER.appendChild(favoriteContainer);
+  });
   // 3. შექმენი ემოჯიების მასივი და რენდომულად დაამატე ციკლის ყოველ იტერაციაზე
 };
+
+renderFavorites();

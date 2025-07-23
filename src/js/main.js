@@ -11,8 +11,10 @@ const FAVORITE_BUTTON = document.getElementById("favorite-button");
 const FAVORITES_CONTAINER = document.getElementById("favorites");
 const FAVORITE_STAR = document.getElementById("favorite-star");
 const WEEKLY_CONTAINER = document.getElementById("weekly-weather");
+const BODY = document.querySelector("body");
+const QUOTE = document.getElementById("quote");
 
-const EMOJIES = ["🍕", "⛩️", "🗼", "🌮", "⚽", "🛕", "🐫", "🥨", "🐉", "🍇"];
+const EMOJIES = ["🌆", "🗼", "🏖️", "🎨", "🌉", "🕌", "🍷", "🍜", "🎡", "🚲"];
 
 const FAVORITE_PLACES =
   JSON.parse(localStorage.getItem("favorite-places")) ?? [];
@@ -56,16 +58,22 @@ SEARCH_BUTTON.addEventListener("click", async () => {
 
 const renderContent = (weatherData) => {
   const place = weatherData.name;
+  const weatherInfo = weatherData.weather[0];
+
   PLACE.textContent = place;
   localStorage.setItem("current-place", place);
   const temp = weatherData.main.temp - 273.15;
 
   WEATHER_VALUE.textContent = temp.toFixed(0) + "°C";
 
-  WEATHER_STATUS.textContent = weatherData.weather[0].main;
+  WEATHER_STATUS.textContent = weatherInfo.main;
 
   WIND_SPEED.textContent = weatherData.wind.speed;
   HUMIDITY.textContent = weatherData.main.humidity;
+  BODY.style.background =
+    weatherContentConfig[weatherInfo.main].backgroundColor;
+
+  QUOTE.textContent = `"${weatherContentConfig[weatherInfo.main].quote}"`;
 };
 
 FAVORITE_BUTTON.addEventListener("click", () => {
@@ -116,6 +124,7 @@ const renderWeeklyWeather = async () => {
 
   WEEKLY_CONTAINER.innerHTML = "";
   weeklyWeather.forEach((item) => {
+    const weatherConfig = weatherContentConfig[item.weather[0].main];
     const weeklyCard = document.createElement("div");
     weeklyCard.className = "weekly-card";
 
@@ -128,13 +137,12 @@ const renderWeeklyWeather = async () => {
     });
 
     weeklyCard.innerHTML = `<h4>${formatter.format(date)}</h4>
-        <p class="emojy">☁️</p>
-        <div class="celsius">
-          <p class="left">${currentTemp.toFixed(0)}°C</p>
-        </div>
-        <p>${item.weather[0].main}</p>`;
+        <p class="emojy">${weatherConfig.icon}</p>
+        <p class="celsius">${currentTemp.toFixed(0)}°C</p>
+        <p class="weather-type">${item.weather[0].main}</p>`;
 
     WEEKLY_CONTAINER.appendChild(weeklyCard);
   });
 };
+
 renderWeeklyWeather();

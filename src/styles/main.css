@@ -305,11 +305,17 @@
   font-size: 30px;
 }
 .weekly-weather .weekly-card .celsius {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 24px;
+  text-align: center;
+  color: #72d0ff;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Fredoka", sans-serif;
+}
+.weekly-weather .weekly-card .weather-type {
+  color: #c1c6cf;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
 }
 
 .favorite-box {

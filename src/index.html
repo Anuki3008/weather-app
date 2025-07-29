@@ -12,7 +12,7 @@
     <section class="main-section">
       <h1>Whimsical Weather ✨</h1>
       <p class="app-description">Your magical weather companion</p>
-      <div class="search-engine">
+      <div class="search-engine" id="search-engine">
         <div class="location-input">
           <img src="../assets/icons/map-pin.svg" alt="Pin" />
 
@@ -26,18 +26,19 @@
           <img src="../assets/icons/search.svg" alt="Search icon" />
         </button>
       </div>
+      <p id="helper-text" class="helper-text"></p>
 
       <div id="welcome">
         <img
           class="sun"
-          src="../assets/images/sunny-character-BRempv_3.jpg"
+          src="../assets/images/sunny-character.jpg"
           alt="Sun image"
         />
 
         <div class="welcome-box">
           <h2>Welcome to Whimsical Weather! ✨</h2>
           <p>Search for any city to discover its magical weather conditions</p>
-          <button>Try London! 🌧️</button>
+          <button id="try-button">Try Batumi! 🌧️</button>
         </div>
       </div>
     </section>
@@ -46,7 +47,11 @@
       <!-- Weather content -->
       <div class="current-weather">
         <div class="info-section">
-          <img src="../assets/images/sunny-character-BRempv_3.jpg" alt="" />
+          <img
+            src="../assets/images/sunny-character.jpg"
+            alt="Character"
+            id="character-image"
+          />
           <h2 id="place">batumi</h2>
           <p class="weather-value" id="weather-value">5°C</p>
           <p class="weather-status" id="weather-status">sunny</p>
@@ -86,7 +91,7 @@
       <!-- Weekly weather cards -->
     </div>
 
-    <div class="favorite-box">
+    <div class="favorite-box" id="favorite-box">
       <!-- Favorite box -->
       <div class="favorite-header">
         <p>★</p>

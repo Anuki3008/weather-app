@@ -63,8 +63,13 @@
 .main-section .search-engine .search-button:hover {
   transform: scale(1.1);
 }
+.main-section .helper-text {
+  font-size: 18px;
+  color: red;
+  margin-top: 8px;
+}
 .main-section #welcome {
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: center;
 }
@@ -109,7 +114,7 @@
 }
 
 #weather-content {
-  display: flex;
+  display: none;
   justify-content: center;
   flex-direction: column;
   align-items: stretch;
@@ -319,6 +324,7 @@
 }
 
 .favorite-box {
+  display: none;
   border-radius: 20px;
   background-color: white;
   max-width: 1200px;
@@ -341,7 +347,7 @@
 }
 .favorite-box .favorites {
   padding: 24px;
-  display: flex;
+  display: none;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 10px;

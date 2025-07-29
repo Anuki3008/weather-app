@@ -1,14 +1,3 @@
-async function getCityFromCoordinates(latitude, longitude) {
-  const apiKey = "pk.ceea564ea18d92d7a874a9d4b46c1560";
-  const apiUrl = `https://us1.locationiq.com/v1/reverse.php?key=${apiKey}&lat=${latitude}&lon=${longitude}&format=json`;
-
-  const res = await fetch(apiUrl);
-
-  const data = await res.json();
-
-  return data.address.city;
-}
-
 const getWeeklyWeatherData = async (place) => {
   const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=9b1eafa8504d3df1a475ec2a4e57743f`;
   const res = await fetch(apiUrl);
@@ -35,6 +24,7 @@ const weatherContentConfig = {
     textColor: "#1e3a8a",
     icon: "🌧️",
     quote: "Rain is just the sky crying — even it needs to let go sometimes.",
+    character: "rainy-character.jpg",
   },
   sunny: {
     backgroundColor:
@@ -43,6 +33,7 @@ const weatherContentConfig = {
     icon: "🔆",
     quote:
       "When the sun returns, it doesn't ask what you've been through — it just shines.",
+    character: "sunny-character.jpg",
   },
   Snow: {
     backgroundColor:
@@ -50,6 +41,7 @@ const weatherContentConfig = {
     textColor: "#1e3a8a",
     icon: "❄️",
     quote: "Snow reminds us that stillness can sparkle too.",
+    character: "snowy-character.jpg",
   },
   Drizzle: {
     backgroundColor:
@@ -65,6 +57,7 @@ const weatherContentConfig = {
     icon: "⛈️",
     quote:
       "Every thunderstorm teaches us how strong silence can feel afterward.",
+    character: "stormy-character.jpg",
   },
   Clouds: {
     backgroundColor:
@@ -72,6 +65,7 @@ const weatherContentConfig = {
     textColor: "#1e3a8a",
     icon: "☁️",
     quote: "Behind every cloud, the sky is still blue.",
+    character: "cloudy-character.jpg",
   },
   Clear: {
     backgroundColor:
@@ -79,30 +73,6 @@ const weatherContentConfig = {
     textColor: "#1e3a8a",
     icon: "🌤️",
     quote: "In the clearest skies, we see how far we’ve come.",
+    character: "cloudy-character.jpg",
   },
 };
-
-// const renderWeeklyWeather = async (place) => {
-//   const getWeeklyWeatherData = await getWeeklyWeatherData(place);
-//   WEEKLY_CONTAINER.innerHTML = "";
-//   getWeeklyWeatherData.forEach((item) => {
-//     const weeklyCard = document.createElement("div");
-//     weeklyCard.className = "weekly-card";
-//     const currentTemp = item.main.temp - 273.15;
-//     const date = new Date(item.dt_txt);
-//     const formatter = new Intl.DateTimeFormat("en-US");
-//     const weatherType = item.weather[0].main;
-//     const weatherConect = weatherContentObject[weatherType]; // {
-//     weeklyCard.style.backgroundColor =
-//       weatherContentObject[weatherType].backgroundColor;
-//     weeklyCard.style.color = weatherContentObject[weatherType].textColor;
-//     weeklyCard.innerHTML = "h4>${formatter.format(date)}</h4.";
-//     weeklyCard.innerHTML +=
-//       'p class= "emojy">${weatherContentObject[weatherType].icon}</p>';
-//     weeklyCard.innerHTML +=
-//       'p class="celsius">${currentTemp.toFixed(0)} °C</p>';
-//     weeklyCard.innerHTML +=
-//       'p class="weather-type">${item.weather[0].main}</p>';
-//     WEEKLY_CONTAINER.appendChild(weeklyCard);
-//   });
-// };

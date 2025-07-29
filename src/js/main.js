@@ -1,18 +1,26 @@
 const API_KEY = "0c421ff54e43e7c92fdb457ca57f1e42";
 
+const WELCOME_BOX = document.getElementById("welcome");
+
 const SEARCH_INPUT = document.getElementById("search-input");
 const SEARCH_BUTTON = document.getElementById("search-button");
+const SEARCH_ENGINE = document.getElementById("search-engine");
+const HELPER_TEXT = document.getElementById("helper-text");
 const PLACE = document.getElementById("place");
 const WEATHER_VALUE = document.getElementById("weather-value");
 const WEATHER_STATUS = document.getElementById("weather-status");
 const WIND_SPEED = document.getElementById("wind-speed");
 const HUMIDITY = document.getElementById("humidity");
+const FAVORITE_BOX = document.getElementById("favorite-box");
 const FAVORITE_BUTTON = document.getElementById("favorite-button");
 const FAVORITES_CONTAINER = document.getElementById("favorites");
 const FAVORITE_STAR = document.getElementById("favorite-star");
 const WEEKLY_CONTAINER = document.getElementById("weekly-weather");
 const BODY = document.querySelector("body");
 const QUOTE = document.getElementById("quote");
+const CHARACTER_IMAGE = document.getElementById("character-image");
+const WEATHER_CONTENT = document.getElementById("weather-content");
+const TRY_BUTTON = document.getElementById("try-button");
 
 const EMOJIES = ["🌆", "🗼", "🏖️", "🎨", "🌉", "🕌", "🍷", "🍜", "🎡", "🚲"];
 
@@ -27,28 +35,21 @@ if (isFavoritePlace) {
 
 const getWetherData = async (place) => {
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=9b1eafa8504d3df1a475ec2a4e57743f`;
+
   const res = await fetch(apiUrl);
 
   const weatherData = await res.json();
-  renderContent(weatherData);
-};
 
-if ("geolocation" in navigator) {
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      // Now use these coordinates to get the city name
-      city = await getCityFromCoordinates(latitude, longitude);
-      getWetherData(city ?? "Batumi");
-    },
-    (error) => {
-      console.error("Error getting location:", error.message);
-    }
-  );
-} else {
-  console.log("Geolocation is not supported by this browser.");
-}
+  if (weatherData.base) {
+    clearErrorState();
+    SEARCH_INPUT.value = "";
+    renderContent(weatherData);
+  } else {
+    renderErrorState(weatherData.message);
+  }
+
+  renderWeeklyWeather();
+};
 
 SEARCH_BUTTON.addEventListener("click", async () => {
   const inputValue = SEARCH_INPUT.value;
@@ -56,9 +57,40 @@ SEARCH_BUTTON.addEventListener("click", async () => {
   getWetherData(inputValue);
 });
 
+TRY_BUTTON.addEventListener("click",() => {
+  getWetherData("batumi")
+})
+
+SEARCH_INPUT.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    SEARCH_BUTTON.click();
+  }
+});
+
+const renderErrorState = (message) => {
+  // render error states and messages around search input
+  SEARCH_ENGINE.style.border = "solid 1px red";
+  HELPER_TEXT.textContent = message;
+};
+
+const clearErrorState = () => {
+  SEARCH_ENGINE.style.border = "none";
+  HELPER_TEXT.textContent = "";
+};
+
 const renderContent = (weatherData) => {
+  WEATHER_CONTENT.style.display = "flex";
+  FAVORITE_BOX.style.display = "block";
+  FAVORITES_CONTAINER.style.display = "flex";
+  WELCOME_BOX.style.display = "none";
   const place = weatherData.name;
   const weatherInfo = weatherData.weather[0];
+  const weatherObject = weatherContentConfig[weatherInfo.main];
+
+  CHARACTER_IMAGE.setAttribute(
+    "src",
+    `../../assets/images/${weatherObject.character}`
+  );
 
   PLACE.textContent = place;
   localStorage.setItem("current-place", place);
@@ -70,10 +102,9 @@ const renderContent = (weatherData) => {
 
   WIND_SPEED.textContent = weatherData.wind.speed;
   HUMIDITY.textContent = weatherData.main.humidity;
-  BODY.style.background =
-    weatherContentConfig[weatherInfo.main].backgroundColor;
+  BODY.style.background = weatherObject.backgroundColor;
 
-  QUOTE.textContent = `"${weatherContentConfig[weatherInfo.main].quote}"`;
+  QUOTE.textContent = `"${weatherObject.quote}"`;
 };
 
 FAVORITE_BUTTON.addEventListener("click", () => {
@@ -120,8 +151,6 @@ renderFavorites();
 const renderWeeklyWeather = async () => {
   const weeklyWeather = await getWeeklyWeatherData(CURRENT_PLACE);
 
-  console.log({ weeklyWeather });
-
   WEEKLY_CONTAINER.innerHTML = "";
   weeklyWeather.forEach((item) => {
     const weatherConfig = weatherContentConfig[item.weather[0].main];
@@ -144,5 +173,3 @@ const renderWeeklyWeather = async () => {
     WEEKLY_CONTAINER.appendChild(weeklyCard);
   });
 };
-
-renderWeeklyWeather();
